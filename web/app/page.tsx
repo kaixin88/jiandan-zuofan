@@ -18,5 +18,5 @@ export default function Home() {
     tags: r.tags,
     hasImg: covers.has(r.id),
   }));
-  return <HomeList initial={recipes} totalCount={all.length} />;
+  return <HomeList initial={recipes} />;
 }
