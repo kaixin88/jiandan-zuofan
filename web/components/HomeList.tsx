@@ -55,10 +55,8 @@ const PAGE_SIZE = 30;
 
 export default function HomeList({
   initial,
-  totalCount,
 }: {
   initial: RecipeListItem[];
-  totalCount: number;
 }) {
   const [recipes, setRecipes] = useState<RecipeListItem[]>(initial);
   const [sort, setSort] = useState<SortKey>("total");
@@ -138,9 +136,9 @@ export default function HomeList({
     <div className="home-page">
       <section className="home-hero">
         <div className="home-hero-in">
-          <span className="home-hero-kicker">简单做饭 · {totalCount} 道家常菜</span>
+          <span className="home-hero-kicker">看视频学做菜 · 每道都有详细手把手教程</span>
           <h1>今天，想吃点什么？</h1>
-          <p>能搜、能筛、能收藏，每道菜都讲清楚「为什么这么做」。</p>
+          <p>有原视频、有食材用量、有分步做法，还讲清火候顺序和「为什么这么做」。</p>
         </div>
         <div className="home-hero-orb home-hero-orb-a" aria-hidden="true" />
         <div className="home-hero-orb home-hero-orb-b" aria-hidden="true" />
