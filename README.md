@@ -4,16 +4,17 @@
 > 1077 道家常菜，免费、无广告、可离线使用。
 
 [![访问网站](https://img.shields.io/badge/网站-modianyu.top-ff7043?style=for-the-badge)](https://modianyu.top)
-[![下载 APP](https://img.shields.io/badge/下载-Android%20APK-4caf50?style=for-the-badge)](#-下载-app)
-[![License](https://img.shields.io/badge/license-MIT-blue?style=for-the-badge)](#-许可)
+[![下载 APP](https://img.shields.io/badge/下载-Android%20APK-4caf50?style=for-the-badge)](https://modianyu.top/download/)
+[![License](https://img.shields.io/badge/license-MIT-blue?style=for-the-badge)](#许可)
 
 ---
 
-## 在线体验
+## 先去体验
 
-**网站**：<https://modianyu.top> · **下载页**：<https://modianyu.top/download/> · **项目介绍页**：<https://kaixin88.github.io/jiandan-zuofan/>
+**网站**：<https://modianyu.top> ｜ **APP 下载**：<https://modianyu.top/download/>
 
 不用注册就能看全部菜谱；登录后可以云同步收藏、写评论。
+本仓库是**开源介绍与前端源码**，引流到网站和 APP，内容以线上站点为准。
 
 ---
 
@@ -28,7 +29,7 @@
 - **小贴士 / 讲解要点**：为什么这么做、哪里容易翻车
 - **原视频链接**：想看手法随时跳转
 
-目前收录 **1077 道**（含「村驴」391 篇、王刚等多位 UP 主的教程），全部支持按菜名、食材、标签搜索。
+目前收录 **1077 道**（含「村驴」391 篇、王刚等多位 UP 主的教程），支持按菜名、食材、标签搜索。
 
 ---
 
@@ -42,7 +43,7 @@
 | 评论与热评 | 用户评论 + 由 B 站热评 AI 整理的「精选评价」，明确标注来源 |
 | 内容自动更新 | 网站更新后 APP 自动同步新菜谱，**不用重装** |
 | APK 自动更新 | 启动静默检查版本、SHA-256 校验、一键安装 |
-| 图片缓存 | 内置 350 张成品图，新增菜谱图片自动后台缓存 |
+| SEO 友好 | 全站静态导出、sitemap、逐页 metadata、Recipe 结构化数据 |
 
 ---
 
@@ -50,7 +51,7 @@
 
 | 渠道 | 链接 | 说明 |
 |---|---|---|
-| **CNB（推荐）** | [直接下载 APK](https://cnb.cool/kaixin88/jiandan-zuofan/-/git/raw/main/dist/jiandan-zuofan.apk) | 国内访问稳定，也是自动更新的版本源 |
+| **CNB（推荐）** | [直接下载 APK](https://cnb.cool/kaixinla/jiandan-zuofan/-/git/raw/main/dist/jiandan-zuofan.apk) | 国内访问稳定，也是自动更新的版本源 |
 | GitHub Releases | [Releases · Latest](https://github.com/kaixin88/jiandan-zuofan/releases/latest) | 备用下载入口 |
 | 网站下载页 | <https://modianyu.top/download/> | 版本信息与安装说明 |
 
@@ -68,8 +69,41 @@ APP 启动
                  └─ ApkProvider 以 content:// 唤起系统安装器
 ```
 
-`update.json` 与安装包托管在 [CNB 公开仓库](https://cnb.cool/kaixin88/jiandan-zuofan)，
-国内可达性好；GitHub 主要承担**项目介绍、源码展示与备用下载**。
+`update.json` 与安装包托管在 [CNB 公开仓库](https://cnb.cool/kaixinla/jiandan-zuofan)，
+国内可达性好；GitHub 提供项目介绍、源码与备用下载。
+
+---
+
+## 开源内容
+
+本仓库开源**网站前端源码**，方便交流做法与二次开发：
+
+```
+web/
+├── app/          页面与路由：首页、菜谱详情、下载页、统计页、sitemap、robots
+├── components/   UI 组件：菜谱列表、评分条、评论、APP 下载提示、埋点
+├── lib/          数据读取、静态资源、Supabase 客户端封装、埋点工具
+└── functions/    Cloudflare Pages Function：统计采集端点
+scripts/          统计建表 SQL、热评种子生成脚本
+app/webapp/       APP 内嵌 Web App 的前端部分（HTML / JS / CSS）
+```
+
+**不包含**（安全与体积考虑）：菜谱正文数据、成品图、`web/out/` 构建产物、
+`node_modules/`、APK 二进制、以及任何 `.env` 与密钥文件。
+
+本地跑前端需要自备：
+
+```bash
+cd web
+npm install
+# 建 web/.env.local：
+#   NEXT_PUBLIC_SUPABASE_URL=...
+#   NEXT_PUBLIC_SUPABASE_ANON_KEY=...
+npm run dev
+```
+
+线上站点是 `output: "export"` 的纯静态导出，部署在 Cloudflare Pages；
+登录、评论、收藏、统计由 Supabase 提供，浏览器直连。
 
 ---
 
@@ -86,31 +120,11 @@ APP 启动
                                           网站 /recipe/<id>/      Android WebView 壳
                                                   │                 （aapt2/d8 本机打包）
                                                   ▼
-                                          Supabase：登录 / 收藏 / 评论 / 点赞
+                                          Supabase：登录 / 收藏 / 评论 / 点赞 / 统计
 ```
 
-- **网站**：Next.js 16 App Router + TypeScript，`output: "export"` 纯静态，1077 篇预渲染 HTML；附带 sitemap、逐页 metadata、Recipe JSON-LD 结构化数据
-- **APP**：原生 WebView 壳（无 Gradle / 无 AndroidX）+ 离线 Web App，本机 `aapt2 → javac → d8 → zipalign → apksigner` 一键出包
-- **后端**：Supabase（Auth + PostgREST + RLS），静态页面浏览器直连
-- **部署**：Cloudflare Pages（网站与 `/app/` 数据接口）、CNB（APK 与版本清单）
-
-内容同步与 APK 版本更新是**两条独立链路**：菜谱新增只需更新网站数据，APP 启动自动同步；只有 APP 功能变更才需要发新版。
-
----
-
-## 目录说明（本仓库）
-
-```
-jiandan-zuofan/
-├── README.md              本文件：项目介绍与下载入口
-├── docs/
-│   └── index.html         GitHub Pages 落地页（开启 Pages 后即为介绍站）
-├── LICENSE                代码 MIT 许可
-└── PUSH.md                仓库初始化与发布说明（维护者用）
-```
-
-> 本仓库是**介绍与分发仓库**，不含完整源码与菜谱数据。菜谱正文与网站代码在私有工作区维护，
-> 如需合作或反馈，欢迎提 Issue。
+内容同步与 APK 版本更新是**两条独立链路**：菜谱新增只需更新网站数据，APP 启动自动同步；
+只有 APP 功能变更才需要发新版。
 
 ---
 
