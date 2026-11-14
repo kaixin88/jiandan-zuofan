@@ -1,0 +1,10 @@
+# 本仓库只放介绍与分发内容，不提交 APK 与本地构建产物
+*.apk
+*.log
+.env
+.env.*
+.DS_Store
+Thumbs.db
+__pycache__/
+node_modules/
+dist/
