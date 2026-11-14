@@ -1,0 +1,58 @@
+import type { Metadata } from "next";
+import DownloadButtons from "@/components/DownloadButtons";
+
+export const metadata: Metadata = {
+  title: "下载 APP",
+  description:
+    "下载「简单做饭」安卓 APP：1077 道结构化家常菜谱离线看，收藏云同步，支持自动更新。",
+  alternates: { canonical: "/download/" },
+};
+
+export default function DownloadPage() {
+  return (
+    <div className="dl-page">
+      <h1 className="article-title">下载「简单做饭」APP</h1>
+      <p className="article-excerpt">
+        把 1077 道家常菜谱装进口袋：离线可看、按食材与标签筛选、收藏云同步、买菜清单随手记。
+      </p>
+
+      <DownloadButtons />
+
+      <div className="dl-grid">
+        <div className="dl-card">
+          <strong>当前版本</strong>
+          <span>v1.3.0 · versionCode 4</span>
+        </div>
+        <div className="dl-card">
+          <strong>安装包</strong>
+          <span>约 4.1 MB</span>
+        </div>
+        <div className="dl-card">
+          <strong>系统要求</strong>
+          <span>Android 8.0 及以上</span>
+        </div>
+      </div>
+
+      <h2>自动更新</h2>
+      <p>
+        APP 每次启动会静默检查版本清单，只有发现更高版本时才在首页顶部提示；
+        点击更新后后台下载、校验 SHA-256，再交给系统安装器。同版本或检查失败完全静默。
+      </p>
+      <p className="muted-sm">
+        版本清单与安装包托管在 CNB 公开仓库（国内访问稳定）；GitHub 提供项目介绍与备用下载入口。
+      </p>
+
+      <h2>不想装 APP？</h2>
+      <p>
+        网站 <a href="/">modianyu.top</a> 是完整的菜谱站，所有内容都能直接看，也能收藏、评论。
+      </p>
+
+      <h2>安装提示</h2>
+      <ul className="dl-list">
+        <li>首次安装需要在系统设置里允许「安装未知来源应用」，这是自行分发 APK 的正常步骤。</li>
+        <li>APP 为个人开发、免费无广告，不需要注册即可浏览；登录后才能云同步收藏。</li>
+        <li>菜谱内容来自公开美食视频的整理，仅供家庭烹饪参考。</li>
+      </ul>
+    </div>
+  );
+}
