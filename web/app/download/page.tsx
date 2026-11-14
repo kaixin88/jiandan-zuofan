@@ -4,7 +4,7 @@ import DownloadButtons from "@/components/DownloadButtons";
 export const metadata: Metadata = {
   title: "下载 APP",
   description:
-    "下载「简单做饭」安卓 APP：1077 道结构化家常菜谱离线看，收藏云同步，支持自动更新。",
+    "下载「简单做饭」安卓 APP：带原视频的详细手把手菜谱离线看，食材用量与分步做法一步步讲清楚，收藏云同步，支持自动更新。",
   alternates: { canonical: "/download/" },
 };
 
@@ -13,7 +13,7 @@ export default function DownloadPage() {
     <div className="dl-page">
       <h1 className="article-title">下载「简单做饭」APP</h1>
       <p className="article-excerpt">
-        把 1077 道家常菜谱装进口袋：离线可看、按食材与标签筛选、收藏云同步、买菜清单随手记。
+        把带视频的手把手菜谱装进口袋：每道菜都有原视频、食材用量和分步做法，讲清火候顺序与为什么这么做。离线可看、按食材与标签筛选、收藏云同步。
       </p>
 
       <DownloadButtons />
