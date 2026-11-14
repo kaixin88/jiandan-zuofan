@@ -8,20 +8,21 @@ import Analytics from "@/components/Analytics";
 export const metadata: Metadata = {
   metadataBase: new URL("https://modianyu.top"),
   title: {
-    default: "简单做饭 · 1077 道家常菜谱",
+    default: "简单做饭 · 看视频学做菜，手把手菜谱教程",
     template: "%s · 简单做饭",
   },
-  description: "把美食博主的视频，整理成能搜、能筛、能收藏的结构化菜谱。今天，想吃点什么？",
+  description:
+    "每道菜都配原视频和详细手把手教程：食材用量、分步做法、火候时间与先后顺序，还讲清为什么这么做、哪里容易翻车。能搜、能筛、能收藏。",
   applicationName: "简单做饭",
-  keywords: ["家常菜谱", "菜谱", "做法", "做饭", "美食教程", "食材用量", "简单做饭"],
+  keywords: ["家常菜谱", "菜谱", "做法", "做饭", "美食教程", "手把手教程", "视频菜谱", "食材用量", "简单做饭"],
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     siteName: "简单做饭",
     locale: "zh_CN",
     url: "https://modianyu.top/",
-    title: "简单做饭 · 1077 道家常菜谱",
-    description: "把美食博主的视频，整理成能搜、能筛、能收藏的结构化菜谱。",
+    title: "简单做饭 · 看视频学做菜，手把手菜谱教程",
+    description: "有原视频、有详细手把手教程：食材用量、分步做法、火候顺序，一步步讲清楚。",
   },
   twitter: { card: "summary_large_image" },
   robots: { index: true, follow: true },
