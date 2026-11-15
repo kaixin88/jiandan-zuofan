@@ -60,16 +60,22 @@ NICK_POOL = [
 ]
 SOURCE_LABEL = "B站热评精选 · AI整理"
 
-SUM_SYSTEM = """你是中文菜谱网站的编辑。下面是某道菜原视频下的 B 站热评（已按点赞数排序）。
-请把其中有价值的信息提炼成 3–4 条简短的「读者评价」，用于展示在该菜谱页下方。
+# 唯一模式：热评是什么就写成什么。
+# 玩梗、调侃、玩笑、地域争议、怀旧、催更、求教程……全都属于热评的真实内容，照实写。
+# 不筛"有没有做菜干货"，不补观感，不美化，不替换。
+SUM_SYSTEM = """你是中文菜谱网站的编辑。下面是某道菜原视频下的 B 站热评（按点赞数排序）。
 
-要求：
-1. 每条 20–60 字，口语、具体、像真实读者会说的话。
-2. 尽量覆盖不同角度：做法难点、口味评价、复刻结果、食材替换、失败提醒等。
-3. 只能依据给出的热评内容，不得编造热评里没提到的食材、数字、步骤或结论。
-4. 不要出现「网友说」「评论区」「B站」等字样，不要照抄原句，不要加引号或表情。
-5. 若热评信息不足以凑 3 条，就输出能写的条数（至少 1 条）；若完全没有可用信息，输出 []。
-6. 严格只输出一个 JSON 字符串数组，例如：["第一条","第二条","第三条"]，不要代码块、不要解释。"""
+请把它们整理成 2–4 条简短的评论，展示在该菜谱页下方。
+
+核心原则：**热评是什么，就写什么**。
+1. 玩梗、开玩笑、调侃、吐槽、地域口味争论、怀念、催更、求教程、催博主——这些本身就是热评的内容，照实写出来。
+2. 忠实于原意：可以顺成通顺中文、合并重复说法，但不得改变立场、语气与重点。
+3. **绝对不添加热评里没有的信息**：不补食材用量、克数、温度、时间、步骤、比例，不编造个人经历，不编造"做成功了"之类的结论。
+4. 不美化、不升华：不要把一个玩笑写成正经评价，不要把调侃写成品鉴。
+5. 不出现「网友说」「评论区」「B站」「UP主」等字样，不点名具体用户，不加引号或表情符号。
+6. 每条 12–50 字，保持口语。
+7. 只输出 JSON 字符串数组，例如：["第一条","第二条"]，不要代码块、不要解释。
+   若热评全是纯表情/纯符号、确实没有任何可转述的文字含义，才输出 []。"""
 
 
 def log(m):
@@ -110,7 +116,10 @@ def hot_replies(s, aid, pages=2):
         rs = (d.get("data") or {}).get("replies") or []
         for r in rs:
             msg = ((r.get("content") or {}).get("message") or "").strip()
-            if len(msg) >= 8:
+            # 不再按长度筛：像「大厨」「来交作业了」「有点东西！」「[星星眼]」都是真实热评，
+            # 之前 len>=8 的阈值把它们全滤掉，导致误判成「无热评」。
+            # 只丢纯空白；纯表情/纯符号交给 AI 判断，它转述不出内容会返回 []。
+            if msg:
                 out.append({"like": r.get("like") or 0, "text": msg[:300]})
         if len(rs) < 20:
             break
@@ -127,7 +136,9 @@ def summarize(api_base, api_key, title, replies):
             {"role": "system", "content": SUM_SYSTEM},
             {"role": "user", "content": "菜名：%s\n\n热评：\n%s" % (title, joined[:6000])},
         ],
-        "max_tokens": 2048,
+        # flash 是推理模型：reasoning_tokens 会先吃掉配额（实测单次思考可达 400–600），
+        # 给 2048 时容易在 JSON 输出中途被 length 截断，导致整批解析失败、误判为"无可用内容"。
+        "max_tokens": 4096,
         "temperature": 0.7,
     }
     h = {"Content-Type": "application/json"}
@@ -140,17 +151,21 @@ def summarize(api_base, api_key, title, replies):
     content = (r.json()["choices"][0]["message"].get("content") or "").strip()
     content = re.sub(r"^```(?:json)?\s*|\s*```$", "", content).strip()
     m = re.search(r"\[[\s\S]*\]", content)
-    if not m:
-        return []
-    try:
-        arr = json.loads(m.group(0))
-    except Exception:
-        return []
-    return [str(x).strip() for x in arr if isinstance(x, str) and 8 <= len(str(x).strip()) <= 120][:4]
+    if m:
+        try:
+            arr = json.loads(m.group(0))
+            return [str(x).strip() for x in arr
+                    if isinstance(x, str) and 8 <= len(str(x).strip()) <= 120][:4]
+        except Exception:
+            pass
+    # 兜底：输出被 max_tokens 截断导致 JSON 不完整时，抢救已闭合的字符串
+    salvaged = re.findall(r'"([^"\\]{8,120})"', content)
+    return [x.strip() for x in salvaged][:4]
 
 
 def grounded(text, corpus):
-    """生成文本里出现的数字必须能在原始热评里找到，防止 AI 编造用量/时间/温度。"""
+    """只校验数字：文案里出现的数字必须在原始热评里能找到，防止 AI 编造用量/时间/温度。
+    注意：不再做「跑偏」过滤——玩梗、调侃、讲人、讲节目效果都是热评的真实内容，照实保留。"""
     for num in re.findall(r"\d+(?:\.\d+)?", text):
         if num not in corpus:
             return False
@@ -191,6 +206,10 @@ def main():
     ap.add_argument("--api-base", default=os.environ.get("TOP100_API_BASE", "http://192.168.5.3:8080/v1"))
     ap.add_argument("--api-key", default=os.environ.get("TOP100_API_KEY", "unused"))
     ap.add_argument("--outdir", default=str(OUTDIR))
+    # 只补指定 id（逗号分隔），一次加载 recipes 批量跑完，避免逐条重启进程。
+    # 已存在的分片默认跳过；--force 可覆盖重跑（改过提示词后刷新旧结果用）。
+    ap.add_argument("--ids", default="")
+    ap.add_argument("--force", action="store_true")
     a = ap.parse_args()
 
     recipes = json.loads(RECIPES.read_text(encoding="utf-8"))
@@ -200,7 +219,12 @@ def main():
     s = bili_session()
     todo = [(i + 1, r) for i, r in enumerate(recipes)
             if (i + 1) not in existing and re.search(r"BV[0-9A-Za-z]{10,}", r.get("video_url") or "")]
-    if not a.all:
+    if a.ids.strip():
+        want = {int(x) for x in a.ids.replace(" ", "").split(",") if x.strip().isdigit()}
+        todo = [(i + 1, r) for i, r in enumerate(recipes)
+                if (i + 1) in want and (a.force or (i + 1) not in existing)
+                and re.search(r"BV[0-9A-Za-z]{10,}", r.get("video_url") or "")]
+    elif not a.all:
         todo = [x for x in todo if x[0] > a.start][:a.limit]
     log("待处理 %d 篇（已有分片 %d 篇），模型 flash @ %s" % (len(todo), len(existing), a.api_base))
 
@@ -208,25 +232,24 @@ def main():
     for rid, r in todo:
         bv = re.search(r"BV[0-9A-Za-z]{10,}", r["video_url"]).group(0)
         try:
+            texts = []
             aid = get_aid(s, bv)
             time.sleep(0.8)
             replies = hot_replies(s, aid)
-            if not replies:
-                log("  #%d %s 无热评，跳过" % (rid, r["title"]))
-                skip += 1
-                continue
-            raw = summarize(a.api_base, a.api_key, r["title"], replies)
-            texts = filter_grounded(raw, replies)
-            if raw and len(texts) < len(raw):
-                log("    #%d 剔除 %d 条含无据数字的评价" % (rid, len(raw) - len(texts)))
+            if replies:
+                raw = summarize(a.api_base, a.api_key, r["title"], replies)
+                texts = filter_grounded(raw, replies)
+                if raw and len(texts) < len(raw):
+                    log("    #%d 剔除 %d 条含无据数字的评价" % (rid, len(raw) - len(texts)))
+            # 热评是什么就写什么：玩梗/调侃也如实保留，不做任何"优化"或替换
             if not texts:
-                log("  #%d %s AI 无有效输出，跳过" % (rid, r["title"]))
+                log("  #%d %s 无可用内容，跳过" % (rid, r["title"]))
                 skip += 1
                 continue
             (outdir / ("%d.json" % rid)).write_text(
                 json.dumps(decorate(rid, texts), ensure_ascii=False, indent=1), encoding="utf-8")
             ok += 1
-            log("  #%d %s → %d 条 | %s" % (rid, r["title"], len(texts), texts[0][:34]))
+            log("  #%d %s → %d 条 | %s" % (rid, r["title"], len(texts), texts[0][:30]))
         except Exception as e:
             log("  #%d %s 异常 %s: %s" % (rid, r["title"], type(e).__name__, str(e)[:100]))
             skip += 1
