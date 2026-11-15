@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "note": "底部导航配置。enabled=false 的项不会显示；以后加「值得买」只需把 shop 的 enabled 改成 true，APP 联网同步后自动出现，无需发版。",
+  "items": [
+    { "id": "home", "label": "首页", "icon": "home", "enabled": true, "order": 1 },
+    { "id": "picker", "label": "今天吃什么", "icon": "dice", "enabled": true, "order": 2 },
+    { "id": "mine", "label": "我的", "icon": "user", "enabled": true, "order": 3 },
+    { "id": "shop", "label": "值得买", "icon": "bag", "enabled": false, "order": 4 }
+  ]
+}

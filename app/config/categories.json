@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "note": "分类完全配置化：加/改/删分类只改本文件并重新生成，APP 联网后自动同步，无需发版。rule 为空表示全部。",
+  "ruleFields": {
+    "type": "内容类型 recipe/tip/guide，省略则不限",
+    "maxMinutes": "耗时上限（分钟）",
+    "minMinutes": "耗时下限（分钟）",
+    "minTotal": "综合评分下限",
+    "maxTotal": "综合评分上限",
+    "tagsAny": "命中任一标签",
+    "tagsAll": "必须同时命中所有标签",
+    "excludeTags": "排除含这些标签的条目",
+    "titleContains": "标题包含任一关键词",
+    "author": "按作者（UP 主）精确筛选"
+  },
+  "items": [
+    { "id": "all", "name": "全部", "rule": {} },
+    { "id": "cunlv", "name": "村驴", "rule": { "author": "村驴" } },
+    { "id": "quick", "name": "快手菜", "rule": { "type": "recipe", "maxMinutes": 15 } },
+    { "id": "nofail", "name": "零失败", "rule": { "type": "recipe", "minTotal": 85, "maxMinutes": 30 } },
+    { "id": "xiafan", "name": "下饭菜", "rule": { "type": "recipe", "tagsAny": ["辣味", "红烧酱卤", "腌渍酱菜"] } },
+    { "id": "hard", "name": "宴客硬菜", "rule": { "type": "recipe", "tagsAny": ["正午硬菜", "宴客硬菜", "海鲜水产"] } },
+    { "id": "breakfast", "name": "早餐", "rule": { "type": "recipe", "tagsAny": ["早餐"] } },
+    { "id": "soup", "name": "汤羹暖胃", "rule": { "type": "recipe", "tagsAny": ["汤羹", "晚餐暖胃"] } },
+    { "id": "cold", "name": "凉菜", "rule": { "type": "recipe", "tagsAny": ["凉菜"] } },
+    { "id": "veg", "name": "清爽素菜", "rule": { "type": "recipe", "tagsAny": ["蔬菜", "豆制品"], "excludeTags": ["肉类", "禽类", "海鲜水产"] } },
+    { "id": "crispy", "name": "酥脆炸物", "rule": { "type": "recipe", "tagsAny": ["酥脆炸物", "烧烤"] } },
+    { "id": "steam", "name": "清蒸", "rule": { "type": "recipe", "tagsAny": ["清蒸"] } },
+    { "id": "kid", "name": "老人孩子", "rule": { "type": "recipe", "tagsAny": ["老人孩子"] } },
+    { "id": "night", "name": "夜宵", "rule": { "type": "recipe", "tagsAny": ["夜宵"] } },
+    { "id": "sweet", "name": "甜品", "rule": { "type": "recipe", "tagsAny": ["甜品"] } },
+    { "id": "tips", "name": "做菜技巧", "rule": { "type": "tip" } },
+    { "id": "guide", "name": "教程秘籍", "rule": { "type": "guide" } }
+  ]
+}

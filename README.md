@@ -1,11 +1,11 @@
-# 简单做饭 · 家常菜谱站与安卓 APP
+# 简单做饭，快乐生活
 
-> **看视频学做菜**：每道菜都配原视频，加一份**详细的手把手教程**——
-> 食材用量、分步做法、火候时间与先后顺序，还讲清为什么这么做、哪里容易翻车。
-> 免费、无广告、可离线使用。
+> **把做饭变简单，把日子过快乐。** 家常菜谱站与安卓 APP，保留原视频，配上食材用量与**详细的手把手教程**——
+> 分步做法、火候时间与先后顺序，还讲清为什么这么做、哪里容易翻车。
+> 免费、无广告；APP 内置列表快照可离线浏览，完整教程与原视频需要联网。
 
-[![访问网站](https://img.shields.io/badge/网站-modianyu.top-ff7043?style=for-the-badge)](https://modianyu.top)
-[![下载 APP](https://img.shields.io/badge/下载-Android%20APK-4caf50?style=for-the-badge)](https://modianyu.top/download/)
+[![访问网站](https://img.shields.io/badge/网站-modianyu.top-ffe100?style=for-the-badge)](https://modianyu.top)
+[![下载 APP](https://img.shields.io/badge/下载-Android%20APK-ffe100?style=for-the-badge)](https://modianyu.top/download/)
 [![License](https://img.shields.io/badge/license-MIT-blue?style=for-the-badge)](#许可)
 
 ---
@@ -43,11 +43,14 @@
 
 ## 核心特性
 
+**简单做饭，快乐生活**：少一点来回找用量的麻烦，多一点做成一顿饭的成就感。
+
 | | |
 |---|---|
-| 视频 + 教程对照 | 同一页里既能看原视频手法，也能照着文字教程做 |
+| 视频 + 手把手教程 | 保留原视频，食材用量、分步做法与火候顺序对照着学 |
+| 明黄快乐厨房 | 明黄色浅色界面，黑字按钮与深棕文字链接，轻松找菜、安心阅读 |
 | 能搜能筛 | 菜名、食材、标签、分类、难度多维筛选 |
-| 离线可看 | 安卓 APP 内置首屏快照，没网也能翻菜谱 |
+| 离线列表快照 | 安卓 APP 内置首屏列表快照可离线浏览；完整教程与原视频需要联网 |
 | 收藏同步 | 登录后收藏跨设备同步（Supabase） |
 | 评论与热评 | 用户评论 + 由 B 站热评 AI 整理的「精选评价」，明确标注来源 |
 | 内容自动更新 | 网站更新后 APP 自动同步新菜谱，**不用重装** |
@@ -58,13 +61,15 @@
 
 ## 下载 APP
 
+把做饭的快乐装进口袋：原视频、食材用量和手把手教程随手查，今天也好好吃饭。
+
 | 渠道 | 链接 | 说明 |
 |---|---|---|
 | **CNB（推荐）** | [直接下载 APK](https://cnb.cool/kaixinla/jiandan-zuofan/-/git/raw/main/dist/jiandan-zuofan.apk) | 国内访问稳定，也是自动更新的版本源 |
 | GitHub Releases | [Releases · Latest](https://github.com/kaixin88/jiandan-zuofan/releases/latest) | 备用下载入口 |
 | 网站下载页 | <https://modianyu.top/download/> | 版本信息与安装说明 |
 
-- 当前版本：**v1.3.0**（versionCode 4），约 **4.1 MB**，**Android 8.0+**
+- 当前版本：**v1.4.0**（versionCode 5），**Android 8.0+**
 - 自行分发 APK，首次安装需允许「安装未知来源应用」
 - 免费、无广告、不需要注册即可浏览
 

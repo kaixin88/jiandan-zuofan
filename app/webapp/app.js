@@ -342,10 +342,13 @@
     if (e.minutes) meta.push(e.minutes + " 分钟");
     if (e.type !== "recipe") meta.push(e.type === "tip" ? "技巧" : "教程");
     var badge = e.total != null && e.total >= 85 ? '<span class="badge">' + e.total + "分</span>" : "";
+    var badges = (e.tags || []).slice(0, 2);
     return '<article class="card" data-id="' + esc(e.id) + '">' +
       '<div class="thumb">' + badge + picture(e, false) + "</div>" +
       '<div class="txt"><div class="title">' + esc(e.title) + "</div>" +
-      '<div class="meta">' + meta.join("<i class=\"dot\"></i>") + "</div></div></article>";
+      '<div class="meta">' + meta.join("<i class=\"dot\"></i>") + "</div>" +
+      '<div class="card-tags">' + (e.video ? '<span>视频教程</span>' : '') +
+      badges.map(function (t) { return '<span>' + esc(t) + '</span>'; }).join('') + '</div></div></article>';
   }
 
   function renderList(list, title, sub) {
@@ -369,7 +372,9 @@
   function renderHome() {
     var list = filtered();
     var c = catById(state.category);
-    renderList(list, state.query ? "搜索结果" : c.name, list.length + " 道 · " + (state.manifest ? state.manifest.count : 0) + " 条内容已载入");
+    $("happyHero").hidden = !!state.query || state.category !== "all";
+    $("happyShortcuts").hidden = !!state.query || state.category !== "all";
+    renderList(list, state.query ? "找到想吃的味道" : (c.id === "all" ? "今日做饭灵感" : c.name), list.length + " 道可选 · 原视频与手把手做法");
   }
 
   function renderPicker() {
@@ -415,7 +420,7 @@
 
   function renderMine() {
     var favN = state.favorites.length, hisN = state.history.length;
-    $("mineSub").textContent = state.manifest ? (state.manifest.count + " 条内容 · 联网自动更新") : "离线也能翻，联网自动更新";
+    $("mineSub").textContent = "简单做饭，快乐生活";
     $("mineGroup1").innerHTML = [
       row("heart", "我的收藏", favN + " 道", "fav"),
       row("clock", "浏览历史", hisN + " 条", "history"),
@@ -424,7 +429,7 @@
     ].join("");
     $("mineGroup2").innerHTML = [
       row("trash", "清除本地缓存", "不影响收藏", "clear"),
-      row("info", "关于简单做饭", "v1.3.0", "about")
+      row("info", "关于简单做饭", "v1.4.0", "about")
     ].join("");
   }
 
@@ -617,6 +622,16 @@
     getContent(e).then(function (html) {
       var p = $("prose"); if (!p) return;
       p.innerHTML = html ? foldOriginal(html) : "这段内容需要联网加载，请联网后重新打开。";
+      if (html) {
+        var heads = p.querySelectorAll("h2"), links = [];
+        for (var j = 0; j < heads.length; j++) {
+          heads[j].id = "recipe-section-" + j;
+          links.push('<a href="#recipe-section-' + j + '" data-section="recipe-section-' + j + '">' + esc(heads[j].textContent) + '</a>');
+        }
+        var guide = document.createElement("nav");
+        guide.className = "detail-guide"; guide.innerHTML = links.join("");
+        p.parentNode.insertBefore(guide, p);
+      }
     });
     renderComments(e);
     // 浏览历史
@@ -666,6 +681,9 @@
       $(v).hidden = v !== active;
     });
     $("topbar").querySelector(".chips").hidden = !(!isDetail && !isList && active === "view-home");
+    $("happyHero").hidden = active !== "view-home" || isList || !!state.query || state.category !== "all";
+    $("happyShortcuts").hidden = active !== "view-home" || isList || !!state.query || state.category !== "all";
+    $("topbar").querySelector(".search-wrap").hidden = isDetail || active !== "view-home";
     markTab();
     if (active === "view-picker") renderPicker();
     if (active === "view-mine") renderMine();
@@ -734,6 +752,13 @@
       if (history.length > 1) history.back(); else location.hash = "#/home";
     });
     $("detailBody").addEventListener("click", function (ev) {
+      var section = ev.target.closest("[data-section]");
+      if (section) {
+        ev.preventDefault();
+        var target = $(section.getAttribute("data-section"));
+        if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+        return;
+      }
       var fav = ev.target.closest("#favBtn");
       if (fav) {
         var id = (location.hash.split("/")[2] || "");
@@ -769,7 +794,7 @@
       if (a === "clear") {
         for (var i = 1; i <= 12; i++) del(K.content + i);
         state.contentCache = {}; toast("已清除正文缓存");
-      } else if (a === "about") toast("简单做饭 v1.3.0 · 内容来自网站同步");
+      } else if (a === "about") toast("简单做饭 v1.4.0 · 内容来自网站同步");
     });
     $("shopList").addEventListener("click", function (ev) {
       var r = ev.target.closest("[data-url]"); if (r) openExternal(r.getAttribute("data-url"));

@@ -136,9 +136,9 @@ export default function HomeList({
     <div className="home-page">
       <section className="home-hero">
         <div className="home-hero-in">
-          <span className="home-hero-kicker">看视频学做菜 · 每道都有详细手把手教程</span>
-          <h1>今天，想吃点什么？</h1>
-          <p>有原视频、有食材用量、有分步做法，还讲清火候顺序和「为什么这么做」。</p>
+          <span className="home-hero-kicker">今天的快乐，从一顿家常饭开始</span>
+          <h1>简单做饭，快乐生活</h1>
+          <p>保留原视频，配上食材用量和手把手教程：分步做法、火候顺序与「为什么这么做」，一步步讲清楚。</p>
         </div>
         <div className="home-hero-orb home-hero-orb-a" aria-hidden="true" />
         <div className="home-hero-orb home-hero-orb-b" aria-hidden="true" />

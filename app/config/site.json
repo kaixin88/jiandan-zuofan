@@ -1,0 +1,9 @@
+{
+  "site": "https://modianyu.top",
+  "fallbacks": ["https://www.modianyu.top", "https://caipu-4h2.pages.dev"],
+  "appPrefix": "/app",
+  "imagePrefix": "/dishes",
+  "updateUrl": "https://cnb.cool/kaixinla/jiandan-zuofan/-/git/raw/main/update.json",
+  "builtinImages": 350,
+  "note": "APK 内置前 builtinImages 张成品图保证首屏秒出；其余及以后新增菜谱的图片由 APP 后台单线程串行下载到私有目录并自动缓存。同步源多源竞速，单源 12 秒超时。"
+}

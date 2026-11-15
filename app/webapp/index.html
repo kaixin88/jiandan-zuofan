@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="theme-color" content="#FAF9F7">
+<meta name="theme-color" content="#FFD43B">
 <title>简单做饭</title>
 <link rel="stylesheet" href="app.css">
 </head>
@@ -11,8 +11,8 @@
 
 <header class="topbar" id="topbar">
   <div class="brand-row">
-    <div class="brand"><span class="brand-mark"></span>简单做饭</div>
-    <div class="brand-sub" id="brandSub">看视频学做菜 · 详细手把手教程</div>
+    <div class="brand"><span class="brand-mark" aria-hidden="true"></span>简单做饭</div>
+    <div class="brand-sub" id="brandSub">简单做饭，快乐生活</div>
   </div>
   <div class="search-wrap">
     <svg class="ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
@@ -26,6 +26,14 @@
   <!-- 首页 -->
   <section class="view" id="view-home">
     <div class="update-bar" id="updateBar" hidden></div>
+    <section class="happy-hero" id="happyHero">
+      <div class="hero-copy"><span class="hero-kicker">一顿家常饭，一点小幸福</span><h1>今天也要<br>好好吃饭</h1><p>看视频，照着做。<br>把简单的日子，过得有滋有味。</p></div>
+      <img class="hero-bowl" src="brand-icon.png" alt="快乐小饭碗">
+    </section>
+    <div class="happy-shortcuts" id="happyShortcuts">
+      <a href="#/pick"><span class="shortcut-icon">想</span><strong>今天吃什么</strong><small>选择困难交给我</small></a>
+      <a href="#/fav"><span class="shortcut-icon">藏</span><strong>我的收藏</strong><small>留住喜欢的味道</small></a>
+    </div>
     <div class="section-head">
       <div>
         <div class="section-title" id="listTitle">全部菜谱</div>
@@ -43,6 +51,7 @@
 
   <!-- 今天吃什么 -->
   <section class="view" id="view-picker" hidden>
+    <div class="picker-intro"><span class="hero-kicker">给今天一点灵感</span><h1>下一顿，吃点开心的</h1><p>选个口味，找一道想做的菜。</p></div>
     <div class="picker-scene" id="pickerScene"></div>
     <div class="pick-card" id="pickCard"></div>
     <button class="primary-btn" id="pickAgain">换一个</button>
@@ -52,7 +61,7 @@
   <!-- 我的 -->
   <section class="view" id="view-mine" hidden>
     <div class="mine-head">
-      <div class="avatar">简</div>
+      <div class="avatar"><img src="brand-icon.png" alt="快乐小饭碗"></div>
       <div>
         <div class="mine-name">简单做饭</div>
         <div class="mine-sub" id="mineSub">离线也能翻，联网自动更新</div>
@@ -60,7 +69,7 @@
     </div>
     <div class="group" id="mineGroup1"></div>
     <div class="group" id="mineGroup2"></div>
-    <div class="app-version">简单做饭 · v1.3.0</div>
+    <div class="app-version">简单做饭 · v1.4.0</div>
   </section>
 
   <!-- 值得买（预留，nav 打开后自动出现） -->
@@ -92,7 +101,7 @@
     var x=new XMLHttpRequest();
     x.open("POST","https://modianyu.top/api/hit",true);
     x.setRequestHeader("Content-Type","application/json");
-    x.send(JSON.stringify({kind:first?"app_install":"app_open",visitor_id:uid,path:"app",app_version:"1.3.0"}));
+    x.send(JSON.stringify({kind:first?"app_install":"app_open",visitor_id:uid,path:"app",app_version:"1.4.0"}));
   }catch(e){}
 })();
 </script>

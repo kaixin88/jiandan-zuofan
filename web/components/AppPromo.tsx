@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { track } from "@/lib/track";
 
 /**
@@ -13,14 +14,11 @@ export default function AppPromo() {
   return (
     <aside className="app-promo" aria-label="下载简单做饭 APP">
       <div className="ap-ic" aria-hidden="true">
-        <svg viewBox="0 0 32 32" fill="none" width="26" height="26">
-          <path d="M4 15h24a12 12 0 0 1-12 12 12 12 0 0 1-12-12Z" fill="currentColor" opacity=".95" />
-          <path d="M8 11c0-2.2 2-3 2-5M15 11c0-2.8 2.2-3.6 2.2-6.4M22 11c0-2 1.6-2.8 1.6-4.8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-        </svg>
+        <Image src="/brand-icon.svg" alt="" width={34} height={34} />
       </div>
       <div className="ap-body">
-        <strong className="ap-title">下载「简单做饭」APP</strong>
-        <p className="ap-desc">菜谱离线看、收藏云同步、买菜清单随手记</p>
+        <strong className="ap-title">简单做饭，快乐生活</strong>
+        <p className="ap-desc">原视频、食材用量与手把手教程随手查，收藏云同步</p>
         <a
           href={APP_DOWNLOAD_URL}
           className="ap-btn"

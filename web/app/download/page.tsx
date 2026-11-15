@@ -1,19 +1,28 @@
 import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
 import DownloadButtons from "@/components/DownloadButtons";
 
 export const metadata: Metadata = {
   title: "下载 APP",
   description:
-    "下载「简单做饭」安卓 APP：带原视频的详细手把手菜谱离线看，食材用量与分步做法一步步讲清楚，收藏云同步，支持自动更新。",
+    "简单做饭，快乐生活。下载「简单做饭」安卓 APP v1.4.0：原视频、食材用量与手把手教程随手查，收藏云同步，支持自动更新。内置列表快照可离线浏览，完整教程与视频需要联网。",
   alternates: { canonical: "/download/" },
 };
 
 export default function DownloadPage() {
   return (
     <div className="dl-page">
+      <div className="dl-brand">
+        <Image src="/brand-icon.svg" alt="" width={56} height={56} />
+        <span>简单做饭，快乐生活</span>
+      </div>
       <h1 className="article-title">下载「简单做饭」APP</h1>
       <p className="article-excerpt">
-        把带视频的手把手菜谱装进口袋：每道菜都有原视频、食材用量和分步做法，讲清火候顺序与为什么这么做。离线可看、按食材与标签筛选、收藏云同步。
+        把做饭的快乐装进口袋：保留原视频，配上食材用量与手把手教程，讲清分步做法、火候顺序与为什么这么做。按食材与标签筛选，收藏云同步，让每顿家常饭更从容。
+      </p>
+      <p className="muted-sm">
+        内置列表快照可离线浏览；完整教程与原视频需要联网查看。
       </p>
 
       <DownloadButtons />
@@ -21,11 +30,7 @@ export default function DownloadPage() {
       <div className="dl-grid">
         <div className="dl-card">
           <strong>当前版本</strong>
-          <span>v1.3.0 · versionCode 4</span>
-        </div>
-        <div className="dl-card">
-          <strong>安装包</strong>
-          <span>约 4.1 MB</span>
+          <span>v1.4.0 · versionCode 5</span>
         </div>
         <div className="dl-card">
           <strong>系统要求</strong>
@@ -44,7 +49,7 @@ export default function DownloadPage() {
 
       <h2>不想装 APP？</h2>
       <p>
-        网站 <a href="/">modianyu.top</a> 是完整的菜谱站，所有内容都能直接看，也能收藏、评论。
+        网站 <Link href="/">modianyu.top</Link> 是完整的菜谱站，所有内容都能直接看，也能收藏、评论。
       </p>
 
       <h2>安装提示</h2>
