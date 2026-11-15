@@ -237,10 +237,10 @@ export default function RecipeInteractions({ recipeId }: { recipeId: number }) {
         <div className="seed-comments">
           <div className="seed-head">
             <strong>精选评价 {seeds.length}</strong>
-            <span className="seed-src">B站热评精选 · AI整理</span>
+            <span className="seed-src">B站热评 · 按原意整理</span>
           </div>
           <p className="seed-note">
-            以下整理自该视频的 B 站热评，昵称与时间为示例展示，非站内用户发言。
+            以下为该视频的 B 站热评，按原意整理（含玩笑与调侃），非站内用户发言；昵称与时间为展示用示例。
           </p>
           <ul style={{ listStyle: "none", padding: 0, display: "grid", gap: 10 }}>
             {seeds.map((s, i) => (
