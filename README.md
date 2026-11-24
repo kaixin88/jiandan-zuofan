@@ -119,6 +119,11 @@ npm run dev
 线上站点是 `output: "export"` 的纯静态导出，部署在 Cloudflare Pages；
 登录、评论、收藏、统计由 Supabase 提供，浏览器直连。
 
+成品图不在部署包里：图片托管在独立的 Pages 项目（自有域名 `img.modianyu.top`），
+构建时通过 `NEXT_PUBLIC_DISH_CDN` 注入前缀，组件里用 `lib/assets.ts` 的
+`dishThumb()` / `dishLarge()` 拼地址。这样页面包只含 HTML 与数据，
+图片数量增长不会挤占站点的部署文件额度。
+
 ---
 
 ## 技术架构
